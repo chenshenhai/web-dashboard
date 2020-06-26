@@ -20,7 +20,9 @@ const webpackConfig ={
   // },
   output: {
     path: distResolve(''),
-    filename: '[name].js'
+    filename: '[name].js',
+    library: '__$WebDashboard_[name]',
+    // iife: true,
   },
   module: {
     rules: [
@@ -66,6 +68,10 @@ const webpackConfig ={
       filename: '[name].css'
     })
   ],
+  externals: {
+    'react': 'window.__$WebDashboard_deps_react',
+    'react-dom': 'window.__$WebDashboard_deps_reactDOM',
+  },
   // optimization: {
   //   splitChunks: {
   //     cacheGroups: {
