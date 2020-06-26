@@ -4,14 +4,14 @@ const path = require('path');
 const merge = require('webpack-merge');
 const config = require('./webpack.base.config');
 
-// const prodMode = process.env.NODE_ENV === 'production';
-
-module.exports = merge(config, {
-  mode: 'development',
-  devtool: '#source-map',
-  devServer: {
-    contentBase: path.join(__dirname, '..'),
-    compress: true,
-    port: 9000
-  }
+module.exports = config.map((item) => {
+  return merge(item, {
+    mode: 'development',
+    devtool: '#source-map',
+    devServer: {
+      contentBase: path.join(__dirname, '..'),
+      compress: true,
+      port: 9000
+    }
+  });
 });

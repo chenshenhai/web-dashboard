@@ -5,18 +5,20 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const config = require('./webpack.base.config');
 
-module.exports = merge(config, {
-  mode: 'production',
-  // plugins: [
-  //   new UglifyJsPlugin()
-  // ]
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true
-      }),
-      new OptimizeCSSAssetsPlugin({})
-    ]
-  }
+module.exports = config.map((item) => {
+  return merge(item, {
+    mode: 'production',
+    // plugins: [
+    //   new UglifyJsPlugin()
+    // ]
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true
+        }),
+        new OptimizeCSSAssetsPlugin({})
+      ]
+    }
+  });
 });
