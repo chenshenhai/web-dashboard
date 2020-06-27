@@ -21,7 +21,7 @@ const webpackConfig ={
   output: {
     path: distResolve(''),
     filename: '[name].js',
-    library: '__$WebDashboard_[name]',
+    library: '_$WebDashboard$_[name]',
     // iife: true,
   },
   module: {
@@ -63,15 +63,15 @@ const webpackConfig ={
       }
     ]
   },
+  resolve: {
+    extensions: [ '.tsx', '.ts', 'jsx', '.js' ],
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].css'
     })
   ],
-  externals: {
-    'react': 'window.__$WebDashboard_deps_react',
-    'react-dom': 'window.__$WebDashboard_deps_reactDOM',
-  },
+  // externals: {},
   // optimization: {
   //   splitChunks: {
   //     cacheGroups: {

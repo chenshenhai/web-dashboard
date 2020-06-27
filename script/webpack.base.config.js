@@ -12,7 +12,7 @@ const pagesEntry = {};
 const layoutsEntry = {};
 
 depsKeys.forEach((key) => {
-  depsExternals[`${key}`] = `_$WebDashboard$_deps_${config.deps[key]}}`;
+  depsExternals[`${key}`] = `window._$WebDashboard$_dep_${config.deps[key]}`;
   depsEntry[`dep_${config.deps[key]}`] = srcResolve(`dep/${key}.js`);
 });
 pageKeys.forEach(key => {
@@ -26,7 +26,7 @@ layoutKeys.forEach(key => {
 module.exports = [
   createWebpackConfig({
     entry: {
-      'main': srcResolve('main.ts'),
+      'main': srcResolve('main/index.ts'),
     },
     externals: depsExternals,
   }),

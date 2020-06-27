@@ -5,7 +5,7 @@ export default class Page extends React.Component {
   render() {
     return (
       <div>
-        hello page/hello
+        hello layout/dark
       </div>
     )
   }
