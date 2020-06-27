@@ -1,4 +1,5 @@
 {
+  "globalPrefix": "_$WebDashboard$_",
   "pages": {
     "home": "home",
     "my": "my"

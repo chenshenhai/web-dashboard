@@ -10,8 +10,9 @@ module.exports = config.map((item) => {
     devtool: '#source-map',
     devServer: {
       contentBase: path.join(__dirname, '..'),
-      compress: true,
-      port: 9000
+      // compress: true,
+      port: 9000,
+      hot: false,
     }
   });
 });

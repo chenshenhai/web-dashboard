@@ -2,6 +2,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const babelConfig = require('./babel.config');
+const srcConfig = require('./../src/config.json');
 
 // const prodMode = process.env.NODE_ENV === 'production';
 
@@ -21,7 +22,7 @@ const webpackConfig ={
   output: {
     path: distResolve(''),
     filename: '[name].js',
-    library: '_$WebDashboard$_[name]',
+    library: `${srcConfig.globalPrefix}[name]`,
     // iife: true,
   },
   module: {

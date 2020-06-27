@@ -1,5 +1,6 @@
 declare module "*.json" {
   const value: {
+    globalPrefix: string,
     pages: {
       [key: string]: string;
     },
