@@ -3,6 +3,10 @@
     "home": "home",
     "my": "my"
   },
+  "layouts": {
+    "dark": "darkTheme",
+    "light": "lightTheme"
+  },
   "deps": {
     "react": "react",
     "react-dom": "reactDOM",
