@@ -4,7 +4,7 @@ import './index.less';
 export default class Page extends React.Component {
   render() {
     return (
-      <div>
+      <div className="webdashboard-layout-dark">
         hello layout/dark
       </div>
     )

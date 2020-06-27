@@ -13,6 +13,7 @@ module.exports = config.map((item) => {
       // compress: true,
       port: 9000,
       hot: false,
+      inline: false,
     }
   });
 });

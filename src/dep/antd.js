@@ -1,6 +1,10 @@
 // import React from 'react/cjs/react.development';
-const React = require('antd/dist/antd.js');
+// import './antd.less';
+const antd = require('antd/dist/antd.js');
+require('./antd.less');
+
+
 
 // export default React; 
-module.exports = React;
+module.exports = antd;
 
