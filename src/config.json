@@ -1,0 +1,11 @@
+{
+  "pages": {
+    "home": "home",
+    "my": "my"
+  },
+  "deps": {
+    "react": "react",
+    "react-dom": "reactDOM",
+    "antd": "antd"
+  }
+}

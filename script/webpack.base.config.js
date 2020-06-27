@@ -1,24 +1,30 @@
 const path = require('path');
 const { createWebpackConfig, srcResolve, distResolve } = require('./common');
 const merge = require('webpack-merge');
+const config = require('./../src/config.json');
+
+const depsKeys = Object.keys(config.deps);
+const pageKeys = Object.keys(config.pages);
+
+
+const depsExternals = {};
+const depsEntry = {};
+const pagesEntry = {};
+depsKeys.forEach((key) => {
+  depsExternals[`${key}`] = `_$WebDashboard$_deps_${config.deps[key]}}`;
+  depsEntry[`dep_${config.deps[key]}`] = srcResolve(`dep/${key}.js`);
+});
+pageKeys.forEach(key => {
+  pagesEntry[`page_${config.pages[key]}`] = srcResolve(`page/${key}/index.tsx`);
+})
+
 
 module.exports = [
   createWebpackConfig({
     entry: {
-      'deps_react' : srcResolve('deps/react.js'),
-      'deps_reactDOM' : srcResolve('deps/react-dom.js'),
+      ...depsEntry,
+      ...pagesEntry, 
     },
-    // externals: {},
+    externals: depsExternals,
   }),
-  // createWebpackConfig({
-  //   entry: {
-  //     'core/main' : srcResolve('core/main.js'),
-  //   }
-  // }),
-  // createWebpackConfig({
-  //   entry: {
-  //     'page_home' : srcResolve('page/home/index.tsx'),
-  //     'page_my' : srcResolve('page/my/index.tsx'),
-  //   }
-  // }),
 ]
