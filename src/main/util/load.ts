@@ -23,20 +23,24 @@ export function loadJsList(urls: string[]): Promise<any[]>{
   return Promise.all(promiseList);
 }
 
-export function loadCss(url: string): Promise<void>{
+export function loadCss(url: string){
   if (document.querySelectorAll(`link[${loadAttrKey}="${url}"]`).length > 0) {
-    return Promise.resolve();
+    return;
   }
-  return new Promise((resolve) => {
-    let $link = document.createElement('link');
-    $link.setAttribute('ref', 'stylesheet')
-    $link.setAttribute(loadAttrKey, url)
-    $link.href = url;
-    $link.onload = function(){
-      resolve();
-      this.onload = null;
-    }
-    document.getElementsByTagName('head')[0].appendChild($link);
+  let $link = document.createElement('link');
+  $link.setAttribute('ref', 'stylesheet');
+  $link.setAttribute(loadAttrKey, url);
+  $link.href = url;
+  $link.onload = function(){
+    this.onload = null;
+  }
+  document.getElementsByTagName('head')[0].appendChild($link);
+}
+
+
+export function loadCssList(urls: string[]) {
+  urls.forEach((url) => {
+    loadCss(url);
   });
 }
 
