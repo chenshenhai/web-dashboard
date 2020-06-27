@@ -28,7 +28,7 @@ export function loadCss(url: string){
     return;
   }
   let $link = document.createElement('link');
-  $link.setAttribute('ref', 'stylesheet');
+  $link.setAttribute('rel', 'stylesheet');
   $link.setAttribute(loadAttrKey, url);
   $link.href = url;
   $link.onload = function(){
