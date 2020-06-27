@@ -1,16 +1,18 @@
-import { loadDeps, loadLayout } from './lib/loader';
+import { loadDeps, loadLayout, getDep } from './lib/loader';
 console.log('hello main.js');
 
 
-// loadJs('/dep_antd.js').then(() => {
-//   console.log('load js success!');
-// })
-// loadCss('/dep_antd.css');
 loadDeps(['react', 'react-dom', 'antd'], ['antd']).then(() => {
   console.log('[Web-Dashboard] deps loaded successfully!');
   loadLayout('dark').then((Layout) => {
-    console.log('Layout =', Layout);
+    const React = getDep('react');
+    const ReactDOM = getDep('react-dom');
+    ReactDOM.render(
+      React.createElement(Layout, {
+        // props
+      }, null),
+      document.querySelector('#web-dashboard'),
+    )
   }).catch(console.log);
-
 }).catch(console.log);
 

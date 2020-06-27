@@ -37,3 +37,8 @@ export function loadLayout(name: string): Promise<any> {
     }).then(reject);
   });
 }
+
+export function getDep(name: string): any {
+  const key = `${config.globalPrefix}dep_${config.deps[name]}`;
+  return (window as any)[key];
+}
