@@ -2,12 +2,62 @@
 <html>
 <head>
   <title>Web-Dashboard</title>
-  <!-- <link rel="stylesheet" href="/dist/css/vendor.css"> -->
-  
+  <style>
+    html,body,#web-dashboard {
+      height: 100%; width: 100%; padding: 0; margin: 0;
+    }
+    .loading-container {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .loading-content {
+      
+      width: 120px;
+      height: 120px;
+      position: relative;
+    }
+    .loading-circle-outer, .loading-circle-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #666666;
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-animation: bounce 2.0s infinite ease-in-out;
+      animation: bounce 2.0s infinite ease-in-out;
+    }
+    .loading-circle-inner {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
+    }
+    @-webkit-keyframes bounce {
+      0%, 100% { -webkit-transform: scale(0.0) }
+      50% { -webkit-transform: scale(1.0) }
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+      } 50% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="web-dashboard">
-    Loading...
+    <div class="loading-container">
+      <div class="loading-content">
+        <div class="loading-circle-outer"></div>
+        <div class="loading-circle-inner"></div>
+      </div>
+    </div>
   </div>
   <script src="/main.js"></script>
 </body>

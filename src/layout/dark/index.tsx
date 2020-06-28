@@ -1,12 +1,52 @@
 import React from 'react';
+import { Layout, Menu } from 'antd';
 import './index.less';
 
-export default class Page extends React.Component {
+const { Header, Sider, Content } = Layout;
+
+class LayoutTheme extends React.Component {
+  state = {
+    collapsed: true,
+  };
+
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+
   render() {
     return (
-      <div className="webdashboard-layout-dark">
-        hello layout/dark
-      </div>
-    )
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+          <div className="logo" />
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1" icon={(<span>icon1</span>)}>
+              nav 1
+            </Menu.Item>
+            <Menu.Item key="2" icon={(<span>icon2</span>)}>
+              nav 2
+            </Menu.Item>
+            <Menu.Item key="3" icon={(<span>icon3</span>)}>
+              nav 3
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout className="site-layout">
+          <div onClick={this.toggle.bind(this)}>BTN</div>
+          <Content
+            className="site-layout-background"
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+            }}
+          >
+            Content
+          </Content>
+        </Layout>
+      </Layout>
+    );
   }
 }
+
+export default LayoutTheme;
