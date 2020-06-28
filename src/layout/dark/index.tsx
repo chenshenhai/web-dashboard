@@ -18,17 +18,17 @@ class LayoutTheme extends React.Component {
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed} >
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1" icon={(<span>icon1</span>)}>
-              nav 1
+            <Menu.Item key="1" icon={(<span className="anticon webdashboard-icon-code"></span>)}>
+              编码处理
             </Menu.Item>
-            <Menu.Item key="2" icon={(<span>icon2</span>)}>
-              nav 2
+            <Menu.Item key="2" icon={(<span className="anticon">icon2</span>)}>
+              文本处理
             </Menu.Item>
-            <Menu.Item key="3" icon={(<span>icon3</span>)}>
-              nav 3
+            <Menu.Item key="3" icon={(<span className="anticon">icon3</span>)}>
+              图像处理
             </Menu.Item>
           </Menu>
         </Sider>
