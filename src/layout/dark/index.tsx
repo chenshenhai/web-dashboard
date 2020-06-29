@@ -1,10 +1,21 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
+import { TypeLayoutExtends } from './../type';
+import { menuConfig } from './config';
 import './index.less';
 
 const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
 
-class LayoutTheme extends React.Component {
+interface TypeLayoutProps {
+  $extends: TypeLayoutExtends
+}
+
+interface TypeLayoutState {
+  collapsed: boolean
+}
+
+class LayoutTheme extends React.Component<TypeLayoutProps, TypeLayoutState> {
   state = {
     collapsed: true,
   };
@@ -20,16 +31,25 @@ class LayoutTheme extends React.Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed} >
           <div className="logo" />
+          
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1" icon={(<span className="anticon webdashboard-icon-code"></span>)}>
-              编码处理
-            </Menu.Item>
-            <Menu.Item key="2" icon={(<span className="anticon">icon2</span>)}>
-              文本处理
-            </Menu.Item>
-            <Menu.Item key="3" icon={(<span className="anticon">icon3</span>)}>
-              图像处理
-            </Menu.Item>
+            {menuConfig.map((item, idx) => {
+              if (Array.isArray(item.children) && item.children.length > 0) {
+                return (
+                  <SubMenu key={idx} icon={(<span className={['anticon', item.iconClassName].join(' ')}></span>)} title={item.name}>
+                    {item.children.map((child, childIdx) => {
+                      return (<Menu.Item key={`${idx}-${childIdx}`} >{child.name}</Menu.Item>)
+                    })}
+                  </SubMenu>
+                )
+              } else {
+                return (
+                  <Menu.Item key={idx} icon={(<span className={['anticon', item.iconClassName].join(' ')}></span>)}>
+                    {item.name}
+                  </Menu.Item>
+                )
+              }
+            })}
           </Menu>
         </Sider>
         <Layout className="site-layout">
