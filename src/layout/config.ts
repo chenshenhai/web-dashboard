@@ -5,19 +5,23 @@ export const menuConfig = [
     children: [
       {
         name: 'Unicode 转码',
-        page: 'unicode',
+        page: 'code',
+        tab: 'unicode',
       },
       {
         name: 'Ascii 转码',
-        page: 'ascii',
+        page: 'code',
+        tab: 'ascii',
       },
       {
         name: 'URI 转码',
-        page: 'uri',
+        page: 'code',
+        tab: 'uri',
       },
       {
         name: '二维码',
-        page: 'qrcode',
+        page: 'code',
+        tab: 'qrcode',
       }
     ]
   },
@@ -28,6 +32,7 @@ export const menuConfig = [
       {
         name: '基本处理',
         page: '',
+        tab: '',
       },
     ]
   }

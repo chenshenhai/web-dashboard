@@ -16,7 +16,7 @@ export function loadDeps(jsNames: string[], cssNames: string[]): Promise<any[]> 
 export function loadPage(name: string): Promise<any> {
   const jsUrl: string = `/page_${config.pages[name]}.js`;
   const cssUrl: string = `/page_${config.pages[name]}.css`;
-  const objName: string = `${config.globalPrefix}${config.pages[name]}`;
+  const objName: string = `${config.globalPrefix}page_${config.pages[name]}`;
   loadCss(cssUrl);
   return new Promise((resolve, reject) => {
     loadJs(jsUrl).then(() => {

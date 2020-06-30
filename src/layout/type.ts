@@ -1,5 +1,6 @@
 export interface TypeLayoutExtends {
-  goToPage(name: string): void;
+  goToPage(path: string, params: {[key: string]: string}): void;
+  getPage(name: string): Promise<any>;
 }
 
 

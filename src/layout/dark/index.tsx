@@ -1,7 +1,8 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Layout, Menu } from 'antd';
 import { TypeLayoutExtends } from './../type';
-import { menuConfig } from './config';
+import { menuConfig } from '../config';
 import './index.less';
 
 const { Header, Sider, Content } = Layout;
@@ -17,7 +18,7 @@ interface TypeLayoutState {
 
 let prevPagePath: string = '';
 let nextPagePath: string = '';
-function resetPagePath() {
+function updatePagePath() {
   prevPagePath = nextPagePath;
   const { location } = window;
   const { pathname, search } = location;
@@ -32,16 +33,22 @@ class LayoutTheme extends React.Component<TypeLayoutProps, TypeLayoutState> {
   state = {
     collapsed: true,
   };
-
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
   };
 
+  private _pageRef: any;
+  constructor(props: any) {
+    super(props);
+    this._pageRef = React.createRef(); 
+  }
+
   componentDidMount() {
     this.initHistoryListener();
     this.registerPathListener();
+    this.renderPageContent();
   }
 
   render() {
@@ -55,25 +62,14 @@ class LayoutTheme extends React.Component<TypeLayoutProps, TypeLayoutState> {
               return (
                 <SubMenu key={idx} icon={(<span className={['anticon', item.iconClassName].join(' ')}></span>)} title={item.name}>
                   {item.children.map((child, childIdx) => {
-                    return (<Menu.Item onClick={() => { this.onClickMenu(child.page) }} key={`${idx}-${childIdx}`} >{child.name}</Menu.Item>)
+                    return (
+                    <Menu.Item key={`${idx}-${childIdx}`}
+                      onClick={() => { this.onClickMenu({page: child.page, tab: child.tab}) }}  >
+                      {child.name}
+                    </Menu.Item>)
                   })}
                 </SubMenu>
               )
-              // if (Array.isArray(item.children) && item.children.length > 0) {
-              //   return (
-              //     <SubMenu key={idx} icon={(<span className={['anticon', item.iconClassName].join(' ')}></span>)} title={item.name}>
-              //       {item.children.map((child, childIdx) => {
-              //         return (<Menu.Item onClick={() => { this.onClickMenu(child.page) }} key={`${idx}-${childIdx}`} >{child.name}</Menu.Item>)
-              //       })}
-              //     </SubMenu>
-              //   )
-              // } else {
-              //   return (
-              //     <Menu.Item onClick={() => { this.onClickMenu(item.page) }} key={idx} icon={(<span className={['anticon', item.iconClassName].join(' ')}></span>)}>
-              //       {item.name}
-              //     </Menu.Item>
-              //   )
-              // }
             })}
           </Menu>
         </Sider>
@@ -86,16 +82,16 @@ class LayoutTheme extends React.Component<TypeLayoutProps, TypeLayoutState> {
               padding: 24,
             }}
           >
-            Content
+            <div ref={this._pageRef as React.RefObject<HTMLDivElement>}></div>
           </Content>
         </Layout>
       </Layout>
     );
   }
 
-  onClickMenu(page: string) {
+  onClickMenu(params: {[key: string]: string}) {
     const { $extends } = this.props;
-    $extends.goToPage(page);
+    $extends.goToPage('', params);
   }
 
   initHistoryListener() {
@@ -116,21 +112,40 @@ class LayoutTheme extends React.Component<TypeLayoutProps, TypeLayoutState> {
   }
 
   registerPathListener() {
+    const {  } = this.props;
     window.addEventListener('pushState', () => {
-      const params = resetPagePath();
-      console.log('pushState =', params);
+      this.renderPageContent();
     })
     window.addEventListener('replaceState', () => {
-      const params = resetPagePath();
-      console.log('replaceState =', params);
+      this.renderPageContent();
     })
-    window.addEventListener('popstate', function(event) {
-      const params = resetPagePath();
-      console.log('popstate =', params);
+    window.addEventListener('popstate', () => {
+      this.renderPageContent();
     })
   }
 
-  
+
+  renderPageContent() {
+    const data = updatePagePath();
+    const { prevPagePath, nextPagePath } = data;
+    const prevSearch = '?' + prevPagePath.split('?')[1] || '';
+    const nextSearch = '?' + nextPagePath.split('?')[1] || '';
+    const prevParams = new URLSearchParams(prevSearch);
+    const nextParams = new URLSearchParams(nextSearch);
+    if (prevParams.get('page') === nextParams.get('page')){
+      return;
+    }
+    const { $extends } = this.props;
+    $extends.getPage(nextParams.get('page') as string).then((page) => {
+      let Page = page;
+      if (page.default) {
+        Page = page.default;
+      }
+      ReactDOM.unmountComponentAtNode(this._pageRef.current);
+      ReactDOM.render(React.createElement(Page, {}, null), this._pageRef.current);
+    }).catch(console.log);
+
+  }
   
   
 }
