@@ -1,41 +1,86 @@
-// const path = require('path');
-const { createWebpackConfig, srcResolve, distResolve } = require('./common');
+const path = require('path');
+const merge = require('webpack-merge');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const babelConfig = require('./babel.config');
 const srcConfig = require('./../src/config.json');
 
-const depsKeys = Object.keys(srcConfig.deps);
-const pageKeys = Object.keys(srcConfig.pages);
-const layoutKeys = Object.keys(srcConfig.layouts);
+// const prodMode = process.env.NODE_ENV === 'production';
 
-const depsExternals = {};
-const depsEntry = {};
-const pagesEntry = {};
-const layoutsEntry = {};
+const srcResolve = function (file) {
+  return path.join(__dirname, '..', 'src', file);
+};
 
-depsKeys.forEach((key) => {
-  depsExternals[`${key}`] = `window.${srcConfig.globalPrefix}dep_${srcConfig.deps[key]}`;
-  depsEntry[`dep_${srcConfig.deps[key]}`] = srcResolve(`dep/${key}.js`);
-});
-pageKeys.forEach(key => {
-  pagesEntry[`page_${srcConfig.pages[key]}`] = srcResolve(`page/${key}/index.tsx`);
-})
-layoutKeys.forEach(key => {
-  layoutsEntry[`layout_${srcConfig.layouts[key]}`] = srcResolve(`layout/${key}/index.tsx`);
-})
+const distResolve = function (file) {
+  return path.join(__dirname, '..', 'dist', file);
+};
 
+module.exports = {
+  entry: {
+    'index' : srcResolve('main/index.ts'),
+  },
+  output: {
+    path: distResolve(''),
+    filename: '[name].js',
+    // iife: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader"
+          }
+        ]
+      },
+      {
+        test: /\.(js|jsx)$/,
+        use: {
+          loader: 'babel-loader',
+          options: babelConfig
+        }
+      },
+      {
+        test: /\.(css|less)$/,
+        use: [
+          // devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          // 'style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          // 'postcss-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => {
+                return [];
+              }
+            }
+          },
+          'less-loader'
+        ]
+      }
+    ]
+  },
+  resolve: {
+    extensions: [ '.tsx', '.ts', 'jsx', '.js' ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+  ],
+  // externals: {},
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       commons: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name: 'vendor',
+  //         chunks: 'all'
+  //       }
+  //     }
+  //   }
+  // }
+}
 
-module.exports = [
-  createWebpackConfig({
-    entry: {
-      'main': srcResolve('main/index.ts'),
-    },
-    externals: depsExternals,
-  }),
-  createWebpackConfig({
-    entry: {
-      ...depsEntry,
-      ...layoutsEntry,
-      ...pagesEntry,
-    },
-    externals: depsExternals,
-  }),
-]

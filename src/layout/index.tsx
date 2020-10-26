@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Layout, Menu } from 'antd';
-import { TypeLayoutExtends } from './../type';
-import { menuConfig } from '../config';
+import { TypeLayoutExtends } from './type';
+import { menuConfig } from './config';
 import './index.less';
 
 const { Header, Sider, Content } = Layout;
