@@ -11,7 +11,7 @@ const srcResolve = function (file) {
 };
 
 const distResolve = function (file) {
-  return path.join(__dirname, '..', 'dist', file);
+  return path.join(__dirname, '..', file);
 };
 
 module.exports = {
@@ -20,26 +20,56 @@ module.exports = {
   },
   output: {
     path: distResolve(''),
-    filename: '[name].js',
-    // iife: true,
+    filename: 'dist/[name].js',
+    chunkFilename: 'dist/[name].js'
   },
   module: {
     rules: [
+      // {
+      //   test: /\.ts(x?)$/,
+      //   exclude: /node_modules/,
+      //   use: [
+      //     {
+      //       loader: "ts-loader"
+      //     }
+      //   ]
+      // },
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: babelConfig
+      //   }
+      // },
       {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "ts-loader"
-          }
-        ]
-      },
-      {
-        test: /\.(js|jsx)$/,
-        use: {
-          loader: 'babel-loader',
-          options: babelConfig
-        }
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        include: srcResolve(''),
+        loader: require.resolve('babel-loader'),
+        options: {
+          // customize: require.resolve(
+          //   'babel-preset-react-app/webpack-overrides'
+          // ),
+          presets: [
+            [
+              require.resolve('babel-preset-react-app'),
+              {
+                runtime: 'classic',
+              },
+            ],
+          ],
+          // @remove-on-eject-begin
+          babelrc: false,
+          configFile: false,
+          // @remove-on-eject-end
+          plugins: [
+            // [
+            //   require.resolve('babel-plugin-named-asset-import'),
+            //   {
+            //     loaderMap: {},
+            //   },
+            // ],
+          ].filter(Boolean),
+        },
       },
       {
         test: /\.(css|less)$/,
@@ -67,9 +97,16 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: 'dist/[name].css'
     })
   ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: false,
+    }
+  }
+  
   // externals: {},
   // optimization: {
   //   splitChunks: {

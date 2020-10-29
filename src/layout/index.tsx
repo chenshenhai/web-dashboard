@@ -138,6 +138,7 @@ class LayoutTheme extends React.Component<TypeLayoutProps, TypeLayoutState> {
     const { $extends } = this.props;
     $extends.getPage(nextParams.get('page') as string).then((page) => {
       let Page = page;
+      console.log('Page ========', Page);
       if (page.default) {
         Page = page.default;
       }

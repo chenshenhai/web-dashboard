@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack --watch --config ./script/webpack.dev.config.js",
     "build": "webpack --config ./script/webpack.prod.config.js",
-    "start": "node ./server.js & npm run dev"
+    "start": "npm run serve & npm run dev",
+    "serve": "node ./server.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "babel-loader": "^8.1.0",
+    "babel-preset-react-app": "^10.0.0",
     "css-loader": "^3.6.0",
     "koa": "^2.13.0",
     "koa-static": "^5.0.0",

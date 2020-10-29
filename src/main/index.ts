@@ -22,7 +22,6 @@ const props:TypeLayoutProps  = {
   }
 }
 
-console.log('Layout ======', Layout);
 
 ReactDOM.render(
   React.createElement(Layout, props, null),
